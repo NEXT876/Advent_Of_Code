@@ -12,3 +12,6 @@ Thumbs.db
 
 # Log files
 *.log
+
+# Ignore compiled class files
+*.class
