@@ -10,82 +10,98 @@ public class Guard_Gallivant {
 	public static void main(String[] args) {
 		ArrayList<String> lines = new ArrayList<>();
 
-		int zeile = 0;
+		int line = 0;
 		int position = 0;
 		int j = 0;
 
-//get input and ^ beginning  position
+		//get input and ^ beginning  position
 		while (scanner.hasNextLine()) {
 			String nextLine = scanner.nextLine();
 			if (nextLine.isEmpty()) {
 				break;
 			}
-			j++;
+
 			for (int i = 0; i < nextLine.length(); i++) {
 				if (nextLine.charAt(i) == '^') {
-					position = i;
-					zeile = j;
+					position = i ;
+					line = j ;
 				}
 			}
+			j++;
 			lines.add(nextLine);
 		}
-		System.out.println(zeile);
+		System.out.println(line);
 		System.out.println(position);
-		//System.out.println(String.join("\n", lines));
+		System.out.println(String.join("\n", lines));
 
 
 		//move
-
-		int i = zeile;
-		String direction = "^";
+		char direction = '^';
+		int amount = 0;
 		move:
 		while (true) {
+			switch (direction) {
+				case '^': // move up
+				{
+					while ((lines.get(line - 1).charAt(position)) != '#') {
+						line--;
+						if (line <= 0) {
+							break move;
+						}
+						amount++;
 
-				switch (direction) {
-				case "^": // move up
+
+					}
+					direction = '>';
+				}
+				break;
+				case 'V': // move down
 				{
-					while (!((lines.get(i - 1).charAt(position)) == '#')) {
-						i--;
-						if (lines.get(i).isEmpty()) {
+					while ((lines.get(line + 1).charAt(position)) != '#') {
+						line++;
+						if (line >= lines.size() - 1) {
 							break move;
 						}
+						amount++;
+
 					}
-					direction = ">";
+					direction = '<';
 				}
-				case "v": // move down
+				break;
+				case '<': // move left
 				{
-					while (!((lines.get(i + 1).charAt(position)) == '#')) {
-						i++;
-						if (lines.get(i).isEmpty()) {
-							break move;
-						}
-					}
-					direction = "<";
-				}
-				case "<": // move left
-				{
-					while (lines.get(i).charAt(position - 1) != '#') {
+					while (lines.get(line).charAt(position - 1) != '#') {
 						position--;
+
 						if (position <= 0) {
 							break move;
 						}
+						amount++;
+
 					}
-					direction = "^";
+					direction = '^';
 				}
-				case ">": // move right
+				break;
+				case '>': // move right
 				{
-					while (lines.get(i).charAt(position + 1) != '#') {
+					while (lines.get(line).charAt(position + 1) != '#') {
 						position++;
-						if (position >= lines.get(i).length() - 1) {
+
+						if (position >= lines.get(line).length() - 1) {
 							break move;
 						}
+						amount++;
+
 					}
-					direction = "v";
+					direction = 'V';
 				}
+				break;
 
 
 			}
 		}
+
+		System.out.println(amount);
 
 
 	}
