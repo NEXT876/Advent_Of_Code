@@ -1,36 +1,47 @@
 // Guard_Gallivant.java
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Guard_Gallivant {
-    private static final Scanner scanner = new Scanner(System.in);
+
 
     public static void main(String[] args) {
-        long start = System.currentTimeMillis(); // Startzeit in Millisekunden
+
         ArrayList<String> lines = new ArrayList<>();
 
         int line = 0;
         int position = 0;
         int j = 0;
 
-        //get input and ^ beginning  position
-        while (scanner.hasNextLine()) {
-            String nextLine = scanner.nextLine();
-            if (nextLine.isEmpty()) {
-                break;
-            }
 
-            for (int i = 0; i < nextLine.length(); i++) {
-                if (nextLine.charAt(i) == '^') {
-                    // nextLine = nextLine.replace('^', '.');
-                    position = i;
-                    line = j;
+        try {
+            File file = new File("input.txt");  // Dateipfad anpassen, wenn nötig
+            Scanner scanner = new Scanner(file);
+            //get input and ^ beginning  position
+            while (scanner.hasNextLine()) {
+                String nextLine = scanner.nextLine();
+                if (nextLine.isEmpty()) {
+                    break;
                 }
+
+                for (int i = 0; i < nextLine.length(); i++) {
+                    if (nextLine.charAt(i) == '^') {
+                        // nextLine = nextLine.replace('^', '.');
+                        position = i;
+                        line = j;
+                    }
+                }
+                j++;
+                lines.add(nextLine);
             }
-            j++;
-            lines.add(nextLine);
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Die Datei konnte nicht gefunden werden: " + e.getMessage());
+            return;
         }
         System.out.println(line);
         System.out.println(position);
@@ -135,11 +146,7 @@ public class Guard_Gallivant {
         System.out.println(amount);
         System.out.println(String.join("\n", lines));
 
-        long end = System.currentTimeMillis(); // Endzeit in Millisekunden
 
-        // Umrechnen der Zeit von Millisekunden in Sekunden
-        double timeInSeconds = (end - start) / 1000.0;
-        System.out.println("Ausführungszeit: " + timeInSeconds + " Sekunden");
     }
 
 }
