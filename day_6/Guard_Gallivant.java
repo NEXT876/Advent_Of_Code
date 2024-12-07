@@ -5,108 +5,141 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Guard_Gallivant {
-	private static final Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
-	public static void main(String[] args) {
-		ArrayList<String> lines = new ArrayList<>();
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis(); // Startzeit in Millisekunden
+        ArrayList<String> lines = new ArrayList<>();
 
-		int line = 0;
-		int position = 0;
-		int j = 0;
+        int line = 0;
+        int position = 0;
+        int j = 0;
 
-		//get input and ^ beginning  position
-		while (scanner.hasNextLine()) {
-			String nextLine = scanner.nextLine();
-			if (nextLine.isEmpty()) {
-				break;
-			}
+        //get input and ^ beginning  position
+        while (scanner.hasNextLine()) {
+            String nextLine = scanner.nextLine();
+            if (nextLine.isEmpty()) {
+                break;
+            }
 
-			for (int i = 0; i < nextLine.length(); i++) {
-				if (nextLine.charAt(i) == '^') {
-					position = i ;
-					line = j ;
-				}
-			}
-			j++;
-			lines.add(nextLine);
-		}
-		System.out.println(line);
-		System.out.println(position);
-		System.out.println(String.join("\n", lines));
-
-
-		//move
-		char direction = '^';
-		int amount = 0;
-		move:
-		while (true) {
-			switch (direction) {
-				case '^': // move up
-				{
-					while ((lines.get(line - 1).charAt(position)) != '#') {
-						line--;
-						if (line <= 0) {
-							break move;
-						}
-						amount++;
+            for (int i = 0; i < nextLine.length(); i++) {
+                if (nextLine.charAt(i) == '^') {
+                    // nextLine = nextLine.replace('^', '.');
+                    position = i;
+                    line = j;
+                }
+            }
+            j++;
+            lines.add(nextLine);
+        }
+        System.out.println(line);
+        System.out.println(position);
+        System.out.println(String.join("\n", lines));
 
 
-					}
-					direction = '>';
-				}
-				break;
-				case 'V': // move down
-				{
-					while ((lines.get(line + 1).charAt(position)) != '#') {
-						line++;
-						if (line >= lines.size() - 1) {
-							break move;
-						}
-						amount++;
+        //move
+        char direction = '^';
+        int amount = 0;
+        move:
+        while (true) {
+            switch (direction) {
+                case '^': // move up
 
-					}
-					direction = '<';
-				}
-				break;
-				case '<': // move left
-				{
-					while (lines.get(line).charAt(position - 1) != '#') {
-						position--;
+                    while (line > 0 && (lines.get(line - 1).charAt(position)) != '#') {
+                        line--;
+                        if (lines.get(line).charAt(position) != 'X') {
+                            String aktuelleZeile = lines.get(line);
+                            StringBuilder sb = new StringBuilder(aktuelleZeile);
+                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
+                            aktuelleZeile = sb.toString();
+                            lines.set(line, aktuelleZeile);
+                            amount++;
+                        }
+                    }
 
-						if (position <= 0) {
-							break move;
-						}
-						amount++;
+                    if (line <= 0) {
+                        amount++;
+                        break move;
+                    }
+                    direction = '>';
+                    break;
 
-					}
-					direction = '^';
-				}
-				break;
-				case '>': // move right
-				{
-					while (lines.get(line).charAt(position + 1) != '#') {
-						position++;
+                case 'V': // move down
 
-						if (position >= lines.get(line).length() - 1) {
-							break move;
-						}
-						amount++;
+                    while ((line < lines.size() - 1 && (lines.get(line + 1).charAt(position)) != '#')) {
+                        line++;
+                        if (lines.get(line).charAt(position) != 'X') {
+                            String aktuelleZeile = lines.get(line);
+                            StringBuilder sb = new StringBuilder(aktuelleZeile);
+                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
+                            aktuelleZeile = sb.toString();
+                            lines.set(line, aktuelleZeile);
+                            amount++;
+                        }
+                    }
 
-					}
-					direction = 'V';
-				}
-				break;
+                    if (line >= lines.size() - 1) {
+                        amount++;
 
+                        break move;
+                    }
+                    direction = '<';
+                    break;
 
-			}
-		}
+                case '<': // move left
 
-		System.out.println(amount);
+                    while (position > 0 && (lines.get(line).charAt(position - 1) != '#')) {
+                        position--;
+                        if (lines.get(line).charAt(position) != 'X') {
+                            String aktuelleZeile = lines.get(line);
+                            StringBuilder sb = new StringBuilder(aktuelleZeile);
+                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
+                            aktuelleZeile = sb.toString();
+                            lines.set(line, aktuelleZeile);
+                            amount++;
+                        }
 
+                    }
+                    if (position == 0) {
+                        amount++;
 
-	}
+                        break move;
+                    }
+                    direction = '^';
+                    break;
+
+                case '>': // move right
+
+                    while ((position < lines.get(line).length() - 1) && lines.get(line).charAt(position + 1) != '#') {
+                        position++;
+                        if (lines.get(line).charAt(position) != 'X') {
+                            String aktuelleZeile = lines.get(line);
+                            StringBuilder sb = new StringBuilder(aktuelleZeile);
+                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
+                            aktuelleZeile = sb.toString();
+                            lines.set(line, aktuelleZeile);
+                            amount++;
+                        }
+                    }
+                    if (position >= lines.get(line).length() - 1) {
+                        amount++;
+
+                        break move;
+                    }
+                    direction = 'V';
+                    break;
+
+            }
+        }
+
+        System.out.println(amount);
+        System.out.println(String.join("\n", lines));
+
+        long end = System.currentTimeMillis(); // Endzeit in Millisekunden
+
+        // Umrechnen der Zeit von Millisekunden in Sekunden
+        double timeInSeconds = (end - start) / 1000.0;
+        System.out.println("Ausführungszeit: " + timeInSeconds + " Sekunden");
+    }
 
 }
-
-
-
