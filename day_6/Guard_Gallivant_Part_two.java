@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Guard_Gallivant {
+public class Guard_Gallivant_Part_two {
 
 
     public static void main(String[] args) {
@@ -56,12 +56,15 @@ public class Guard_Gallivant {
 
                     while (line > 0 && (lines.get(line - 1).charAt(position)) != '#') {
                         line--;
-                        if (lines.get(line).charAt(position) != 'X') {
-                            String aktuelleZeile = lines.get(line);
-                            StringBuilder sb = new StringBuilder(aktuelleZeile);
-                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
-                            aktuelleZeile = sb.toString();
-                            lines.set(line, aktuelleZeile);
+
+
+                        if (lines.get(line).charAt(position) == '-') {
+                            char replacer = '+';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
+
+                        } else if (lines.get(line).charAt(position) != '|') {
+                            char replacer = '|';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
                             amount++;
                         }
                     }
@@ -77,12 +80,13 @@ public class Guard_Gallivant {
 
                     while ((line < lines.size() - 1 && (lines.get(line + 1).charAt(position)) != '#')) {
                         line++;
-                        if (lines.get(line).charAt(position) != 'X') {
-                            String aktuelleZeile = lines.get(line);
-                            StringBuilder sb = new StringBuilder(aktuelleZeile);
-                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
-                            aktuelleZeile = sb.toString();
-                            lines.set(line, aktuelleZeile);
+                        if (lines.get(line).charAt(position) == '-') {
+                            char replacer = '+';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
+
+                        } else if (lines.get(line).charAt(position) != '|') {
+                            char replacer = '|';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
                             amount++;
                         }
                     }
@@ -99,12 +103,13 @@ public class Guard_Gallivant {
 
                     while (position > 0 && (lines.get(line).charAt(position - 1) != '#')) {
                         position--;
-                        if (lines.get(line).charAt(position) != 'X') {
-                            String aktuelleZeile = lines.get(line);
-                            StringBuilder sb = new StringBuilder(aktuelleZeile);
-                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
-                            aktuelleZeile = sb.toString();
-                            lines.set(line, aktuelleZeile);
+                        if (lines.get(line).charAt(position) == '|') {
+                            char replacer = '+';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
+
+                        } else if (lines.get(line).charAt(position) != '-') {
+                            char replacer = '-';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
                             amount++;
                         }
 
@@ -121,12 +126,13 @@ public class Guard_Gallivant {
 
                     while ((position < lines.get(line).length() - 1) && lines.get(line).charAt(position + 1) != '#') {
                         position++;
-                        if (lines.get(line).charAt(position) != 'X') {
-                            String aktuelleZeile = lines.get(line);
-                            StringBuilder sb = new StringBuilder(aktuelleZeile);
-                            sb.setCharAt(position, 'X'); // Ersetzt das Zeichen an der angegebenen Position
-                            aktuelleZeile = sb.toString();
-                            lines.set(line, aktuelleZeile);
+                        if (lines.get(line).charAt(position) == '|') {
+                            char replacer = '+';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
+
+                        } else if (lines.get(line).charAt(position) != '-') {
+                            char replacer = '-';
+                            lines.set(line, replaceWay(lines, line, position, replacer));
                             amount++;
                         }
                     }
@@ -140,10 +146,17 @@ public class Guard_Gallivant {
 
             }
         }
-
-        System.out.println(amount);
         System.out.println(String.join("\n", lines));
+        System.out.println(amount);
 
+    }
+
+    private static String replaceWay(ArrayList<String> lines, int line, int position, char replacer) {
+        String aktuelleZeile = lines.get(line);
+        StringBuilder sb = new StringBuilder(aktuelleZeile);
+        sb.setCharAt(position, replacer);
+        aktuelleZeile = sb.toString();
+        return aktuelleZeile;
 
     }
 
