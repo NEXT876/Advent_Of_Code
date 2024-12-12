@@ -1,5 +1,7 @@
 // Bridge_Repair.java
 
+package day_7;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Bridge_Repair {
         long add = 0;
 
         try {
-            File file = new File("day_7/input.txt");
+            File file = new File("src/main/resources/Inputs/day_7.txt");
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 String next = scanner.next();
@@ -46,7 +48,6 @@ public class Bridge_Repair {
             System.out.println(add);
         } catch (FileNotFoundException e) {
             System.out.println("Die Datei konnte nicht gefunden werden: " + e.getMessage());
-            return;
         }
     }
 
@@ -111,12 +112,12 @@ public class Bridge_Repair {
                     combine += numbers.get(i + 1).toString();
                     addieren = Long.parseLong(combine);
                 }
-              //  System.out.println(addieren);
+                //  System.out.println(addieren);
 
             }
             if (addieren == result.getFirst()) {
                 return addieren;
-            } else  {
+            } else {
                 addieren = 0;
             }
         }

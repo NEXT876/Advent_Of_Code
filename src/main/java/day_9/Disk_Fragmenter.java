@@ -1,4 +1,5 @@
 // Disk_Fragmenter.java
+package day_9;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +16,7 @@ public class Disk_Fragmenter {
         char replace;
         long checksum = 0;
         try {
-            File file = new File("day_9/input.txt");
+            File file = new File("src/main/resources/Inputs/day_9.txt");
             Scanner scanner = new Scanner(file);
 
             String input = scanner.next();
@@ -52,7 +53,7 @@ public class Disk_Fragmenter {
                     } while (replace == '.' && n >= 0);
 
                     rearangedInput.setCharAt(i, replace);
-                    rearangedInput.setCharAt(rearangedInput.length() - n -1, point);
+                    rearangedInput.setCharAt(rearangedInput.length() - n - 1, point);
                 } else {
                     i++;
                 }
@@ -69,7 +70,6 @@ public class Disk_Fragmenter {
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Die Datei konnte nicht gefunden werden: " + e.getMessage());
-            return;
         }
     }
 }

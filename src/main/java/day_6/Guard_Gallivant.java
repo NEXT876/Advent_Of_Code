@@ -1,5 +1,6 @@
 // Guard_Gallivant.java
 
+package day_6;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +20,7 @@ public class Guard_Gallivant {
 
 
         try {
-            File file = new File("day_6/input.txt");
+            File file = new File("src/main/resources/Inputs/day_6.txt");
             Scanner scanner = new Scanner(file);
 
             //get input and ^ beginning  position

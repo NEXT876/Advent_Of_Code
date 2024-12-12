@@ -1,11 +1,17 @@
 //Historian_Hysteria.java
 
 
+package day_1;
+
+
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Collections;
-/** erstes Rätsel.*/
- public class Historian_Hysteria {
+import java.util.Scanner;
+
+/**
+ * erstes Rätsel.
+ */
+public class Historian_Hysteria {
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -47,8 +53,3 @@ import java.util.Collections;
     }
 
 }
-
-
-
-
-

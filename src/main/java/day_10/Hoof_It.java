@@ -1,5 +1,6 @@
 // Hoof_It.java
 
+package day_10;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,10 +9,6 @@ import java.util.Scanner;
 
 public class Hoof_It {
 
-
-    //public static int n = 1;
-    public static int jj;
-    public static int ii;
 
     public static void main(String[] args) {
 
@@ -48,7 +45,7 @@ public class Hoof_It {
     private static ArrayList<String> Inputverarbeiten() {
         ArrayList<String> inputZeilen = new ArrayList<>();
         try {
-            File file = new File("day_10/input.txt");
+            File file = new File("src/main/resources/Inputs/day_10.txt");
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {

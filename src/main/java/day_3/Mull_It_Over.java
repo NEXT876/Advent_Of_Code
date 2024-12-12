@@ -1,5 +1,6 @@
 // Mull_It_Over.java
 
+package day_3;
 
 import java.util.Scanner;
 
