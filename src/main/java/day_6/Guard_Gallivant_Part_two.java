@@ -14,8 +14,8 @@ public class Guard_Gallivant_Part_two {
 
         ArrayList<String> lines = new ArrayList<>();
 
-        int line = 0;
-        int position = 0;
+        int beginposition = 0;
+        int beginline = 0;
         int j = 0;
 
 
@@ -32,169 +32,172 @@ public class Guard_Gallivant_Part_two {
 
                 for (int i = 0; i < nextLine.length(); i++) {
                     if (nextLine.charAt(i) == '^') {
-                        position = i;
-                        line = j;
+                        beginposition = i;
+                        beginline = j;
                     }
                 }
                 j++;
                 lines.add(nextLine);
             }
+            System.out.println(String.join("\n", lines));
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Die Datei konnte nicht gefunden werden: " + e.getMessage());
             return;
         }
-        System.out.println(line);
-        System.out.println(position);
+        System.out.println("StartLine: " + beginline);
+        System.out.println("StartPosition: " + beginposition);
+        System.out.println("Anzahl moeglicher Schleifen: " + move(beginline, beginposition, lines));
 
-        //move
-        int beginLine = line;
-        int beginPositon = position;
-        char replacer;
-        char oldChar = lines.get(0).charAt(0);
-        int counter = 0;
-        int amount = 0;
-        for (int i = 0; i < lines.size(); i++) {
-            for (int f = 0; f < lines.get(i).length(); f++) {
-                char direction = '^';
-                amount = 0;
-                line = beginLine;
-                position = beginPositon;
-                if (lines.get(i).charAt(f) != '#') {
-                    oldChar = lines.get(i).charAt(f);
-                    replacer = 'O';
-                    lines.set(line, replaceWay(lines, i, f, replacer));
-                }
-                move:
-                while (true) {
-                    switch (direction) {
-                        case '^': // move up
-
-                            while (line > 0 && (lines.get(line - 1).charAt(position) != '#' && (lines.get(line - 1).charAt(position)) != 'O')) {
-                                line--;
-                                if (line == beginLine && position == beginPositon) {
-                                    counter++;
-                                    System.out.println(counter);
-                                    break move;
-                                }
-                                if (lines.get(line).charAt(position) == '-') {
-                                    replacer = '+';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-
-                                } else if (lines.get(line).charAt(position) != '|') {
-                                    replacer = '|';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-                                    amount++;
-                                }
-                            }
-
-                            if (line <= 0) {
-                                amount++;
-                                break move;
-                            }
-                            direction = '>';
-                            break;
-
-                        case 'V': // move down
-
-                            while ((line < lines.size() - 1 && (lines.get(line + 1).charAt(position)) != '#' && (lines.get(line + 1).charAt(position)) != 'O')) {
-                                line++;
-                                if (line == beginLine && position == beginPositon) {
-                                    counter++;
-                                    System.out.println(counter);
-                                    break move;
-                                }
-                                if (lines.get(line).charAt(position) == '-') {
-                                    replacer = '+';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-
-                                } else if (lines.get(line).charAt(position) != '|') {
-                                    replacer = '|';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-                                    amount++;
-                                }
-                            }
-
-                            if (line >= lines.size() - 1) {
-                                amount++;
-
-                                break move;
-                            }
-                            direction = '<';
-                            break;
-
-                        case '<': // move left
-
-                            while (position > 0 && (lines.get(line).charAt(position - 1) != '#' && lines.get(line).charAt(position - 1) != 'O')) {
-                                position--;
-                                if (line == beginLine && position == beginPositon) {
-                                    counter++;
-                                    System.out.println(counter);
-                                    break move;
-                                }
-                                if (lines.get(line).charAt(position) == '|') {
-                                    replacer = '+';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-
-                                } else if (lines.get(line).charAt(position) != '-') {
-                                    replacer = '-';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-                                    amount++;
-                                }
-
-                            }
-                            if (position == 0) {
-                                amount++;
-
-                                break move;
-                            }
-                            direction = '^';
-                            break;
-
-                        case '>': // move right
-
-                            while ((position < lines.get(line).length() - 1) && (lines.get(line).charAt(position + 1) != '#' && lines.get(line).charAt(position + 1) != 'O')) {
-                                position++;
-                                if (line == beginLine && position == beginPositon) {
-                                    counter++;
-                                    System.out.println(counter);
-                                    break move;
-                                }
-                                if (lines.get(line).charAt(position) == '|') {
-                                    replacer = '+';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-
-                                } else if (lines.get(line).charAt(position) != '-') {
-                                    replacer = '-';
-                                    lines.set(line, replaceWay(lines, line, position, replacer));
-                                    amount++;
-                                }
-                            }
-                            if (position >= lines.get(line).length() - 1) {
-                                amount++;
-
-                                break move;
-                            }
-                            direction = 'V';
-                            break;
-
-                    }
-                }
-
-                lines.set(line, replaceWay(lines, i, f, oldChar));
-            }
-        }
-        System.out.println(counter);
-        System.out.println(amount);
     }
 
-    private static String replaceWay(ArrayList<String> lines, int line, int position, char replacer) {
+    private static String replace(ArrayList<String> lines, int line, int position, char replacer) {
         String aktuelleZeile = lines.get(line);
         StringBuilder sb = new StringBuilder(aktuelleZeile);
         sb.setCharAt(position, replacer);
         aktuelleZeile = sb.toString();
         return aktuelleZeile;
 
+    }
+
+    private static int move(int beginLine, int beginPosition, ArrayList<String> lines) {
+        ArrayList<String> linien = new ArrayList<>();
+        int line;
+        int position;
+        char replacer;
+        char oldChar = lines.getFirst().charAt(0);
+        int AnzahlSchleifen = 0; // Anzahl wie viele verschiedene Schleifen man dem Wachmann legen kann
+        char naechstesZeichen;
+
+
+        for (int i = 0; i < lines.size(); i++) {
+            System.out.println("runden" + i);
+            String aktuelleZeile = lines.get(i);
+            for (int f = 0; f < lines.get(i).length(); f++) {
+                linien = lines;
+                System.out.println("Versuche" + f);
+                char direction = '^';
+                line = beginLine;
+                position = beginPosition;
+                if (aktuelleZeile.charAt(f) != '#') {
+                    oldChar = aktuelleZeile.charAt(f);
+                    replacer = 'O';
+                    linien.set(line, replace(linien, i, f, replacer));
+                }
+                move:
+                while (true) {
+                    switch (direction) {
+                        case '^': // move up
+                            if (line <= 0) {
+                                break move;
+                            } else {
+                                naechstesZeichen = linien.get(line - 1).charAt(position);
+                                if (naechstesZeichen != '#' && naechstesZeichen != 'O') {
+                                    line--;
+
+                                    linien = updateLines(naechstesZeichen, linien, line, position);
+
+                                    if (line == beginLine && position == beginPosition) {
+                                        AnzahlSchleifen++;
+                                        System.out.println(AnzahlSchleifen);
+                                        break move;
+                                    }
+
+                                } else {
+                                    direction = '>';
+
+                                }
+                            }
+                            break;
+
+                        case 'V': // move down
+                            if (line >= linien.size() - 1) {
+                                break move;
+                            } else {
+                                naechstesZeichen = linien.get(line + 1).charAt(position);
+                                if (naechstesZeichen != '#' && naechstesZeichen != 'O') {
+                                    line++;
+
+                                    linien = updateLines(naechstesZeichen, linien, line, position);
+
+                                    if (naechstesZeichen == '+') {
+                                        AnzahlSchleifen++;
+                                        System.out.println(AnzahlSchleifen);
+                                        break move;
+                                    }
+                                } else {
+                                    direction = '<';
+                                }
+                            }
+
+                            break;
+
+                        case '<': // move left
+                            if (position <= 0) {
+
+                                break move;
+                            } else {
+                                naechstesZeichen = linien.get(line).charAt(position - 1);
+                                if (naechstesZeichen != '#' && naechstesZeichen != 'O') {
+                                    position--;
+
+                                    linien = updateLines(naechstesZeichen, linien, line, position);
+
+                                    if (naechstesZeichen == '+') {
+                                        AnzahlSchleifen++;
+                                        System.out.println(AnzahlSchleifen);
+                                        break move;
+                                    }
+                                } else {
+                                    direction = '^';
+                                }
+                            }
+
+                            break;
+
+                        case '>': // move right
+                            if (position >= linien.get(line).length() - 1) {
+                                break move;
+                            } else {
+                                naechstesZeichen = linien.get(line).charAt(position + 1);
+                                if (naechstesZeichen != '#' && naechstesZeichen != 'O') {
+                                    position++;
+
+                                    linien = updateLines(naechstesZeichen, linien, line, position);
+
+                                    if (naechstesZeichen == '+') {
+                                        AnzahlSchleifen++;
+                                        System.out.println(AnzahlSchleifen);
+                                        break move;
+                                    }
+                                } else {
+                                    direction = 'V';
+                                }
+                            }
+                            break;
+
+                    }
+                }
+
+                linien.set(line, replace(linien, i, f, oldChar));
+            }
+        }
+        return AnzahlSchleifen;
+    }
+
+    private static ArrayList<String> updateLines(char naechstesZeichen, ArrayList<String> lines, int line, int position) {
+
+        char replacer;
+        if (naechstesZeichen == '-') {
+            replacer = '+';
+            lines.set(line, replace(lines, line, position, replacer));
+
+        } else if (naechstesZeichen != '|') {
+            replacer = '|';
+            lines.set(line, replace(lines, line, position, replacer));
+        }
+
+        return lines;
     }
 
 }
